@@ -139,7 +139,7 @@ class QuickUsbPlugin : FlutterPlugin, MethodCallHandler {
         val buffer = ByteArray(maxLength)
         val actualLength = connection.bulkTransfer(endpoint, buffer, buffer.count(), 5000)
         if (actualLength < 0) {
-          result.error("500", "bulkTransfer received < 0 value of probably -1")
+          result.error("500", "bulkTransfer received < 0 value of ${actualLength}", null)
         }
         result.success(buffer.take(actualLength))
       }
