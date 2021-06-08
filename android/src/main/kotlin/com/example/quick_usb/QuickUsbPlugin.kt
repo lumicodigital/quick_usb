@@ -138,6 +138,9 @@ class QuickUsbPlugin : FlutterPlugin, MethodCallHandler {
         // TODO Check [UsbDeviceConnection.bulkTransfer] API
         val buffer = ByteArray(maxLength)
         val actualLength = connection.bulkTransfer(endpoint, buffer, buffer.count(), 5000)
+        if (actualLength < 0) {
+          result.failure(Exception("bulkTransfer returned $actualLength"))
+        }
         result.success(buffer.take(actualLength))
       }
       "bulkTransferOut" -> {
