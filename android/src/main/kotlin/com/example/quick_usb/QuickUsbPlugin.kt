@@ -137,7 +137,7 @@ class QuickUsbPlugin : FlutterPlugin, MethodCallHandler {
         val endpoint = device.findEndpoint(endpointMap["endpointNumber"] as Int, endpointMap["direction"] as Int)
         // TODO Check [UsbDeviceConnection.bulkTransfer] API
         val buffer = ByteArray(maxLength)
-        val actualLength = connection.bulkTransfer(endpoint, buffer, buffer.count(), 1000)
+        val actualLength = connection.bulkTransfer(endpoint, buffer, buffer.count(), 5000)
         result.success(buffer.take(actualLength))
       }
       "bulkTransferOut" -> {
@@ -150,7 +150,7 @@ class QuickUsbPlugin : FlutterPlugin, MethodCallHandler {
         val dataSplit = data.asList().windowed(16384, 16384, true).map { it.toByteArray() }
         var sum = 0
         for (bytes in dataSplit) {
-          val actualLength = connection.bulkTransfer(endpoint, bytes, bytes.count(), 1000)
+          val actualLength = connection.bulkTransfer(endpoint, bytes, bytes.count(), 5000)
           if (actualLength < 0) break
           sum += actualLength
         }
